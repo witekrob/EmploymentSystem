@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee page</title>
+<script src="/js/app.js"></script>
+<script type="text/javascript">
+
+var els = document.getElementsByClassName("month-date");
+for(var i=0, l=els.length; i<l; ++i) {
+    var max = els[i].getAttribute('max').split('-');
+    max.push(new Date(max[0], max[1], 0).getDate());
+    els[i].max = max.join('-');
+}
+
+	function showEmployeeEditForm() {
+		var div = document.getElementById('changeEmployeeDetailsForm');
+		div.style.display = "block";
+	}
+	function closeEmployeeEditForm() {
+		var div = document.getElementById('changeEmployeeDetailsForm');
+		div.style.display = "none";
+	}
+</script>
+</head>
+<body>
+
+	<div th:insert="/index.html">...</div>
+	<br>
+	<div th:if="${employee}">
+	
+		<table class="steelBlueCols">
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Surname</th>
+				<th>Date of birth</th>
+				<th>City</th>
+				<th>Country</th>
+				<th>Employer</th>
+				<th>Position</th>
+				<th>Wage per hour</th>
+			</tr>
+			<tr>
+				<td th:text="${employee.employeeId}"></td>
+				<td th:text="${employee.name}"></td>
+				<td th:text="${employee.surname}"></td>
+				<td th:text="${employee.dateOfBirth}"></td>
+				<td th:text="${employee.city}"></td>
+				<td th:text="${employee.country}"></td>
+				<td th:if="${employee.employer!=null}"><a
+					th:href="@{'/showInfoAboutEmployer' + '?employerId=' + ${employee.employer.employerId}}"
+					th:text="${employee.employer.name}"></a></td>
+				<td th:if="${employee.employer==null}"></td>
+				<td th:text="${employee.position}"></td>
+				<td th:text="${employee.wage}"></td>
+		</table>
+
+		<hr>
+		<input type="button" name="answer" value="Show employee edit form"
+			onclick="showEmployeeEditForm()" ondblclick="closeEmployeeEditForm()">
+		
+		<div style="display: none" id="changeEmployeeDetailsForm">
+			<h2>Change details about employee</h2>
+			<form action="" method="POST">
+				<input type="text" name="name"> Edit name <br> <input
+					type="text" name="surname"> Edit surname <br> <input
+					type="date" name="dateOfBirth"> Edit date of birth <br>
+				<input type="text" name="city"> Edit city <br> <input
+					type="text" name="country">Edit country <br> <input
+					type="text" name="typeOfBusiness">Edit types of business <br>
+				<input type="text" name="wage" required="required">Edit wage<br>
+				<select name="employerId" id="employerId" required="required">
+					<option value="">Select employer</option>
+					<option th:each="employer : ${employersList}"
+						th:value="${employer.employerId}"
+						th:text="${employer.name}+' : '+${employer.employerId}"></option>
+				</select> <br>
+				 <select name="position" id="position" required="required">
+					<option value="">Select position</option>
+					<option th:each="position : ${positions}" th:value="${position}"
+						th:text="${position}"></option>
+				</select> <input type="text" name="employeeId"
+					th:field="${employee.employeeId}" hidden="hidden"> <input
+					type="submit" value="update">
+			</form>
+		</div>
+		
+		<hr>		
+</div>
+
+<h1>Attendance list</h1>				
+<table id="attendanceList" class="steelBlueCols">
+			<tr>
+				<th onclick="sortTable(0)" th:text="ID"> 
+				<th onclick="sortTable(1)" th:text="Month">
+				<th onclick="sortTable(2)" th:text="Year">
+				<th onclick="sortTable(3)" th:text="Worked_hours">
+				<th onclick="sortTable(4)" th:text="Monthly_wage">
+				<th onclick="sortTable(5)" th:text="New_Worked_Hours" >
+			</tr>
+			<tr th:each="attendanceList: ${employee.attendanceLists}">
+				<td th:text="${attendanceList.attendanceListId}"></td>
+				<td th:text="${attendanceList.months}"></td>
+				<td th:text="${attendanceList.year}"></td>
+				<td th:text="${attendanceList.workedHours}"></td>
+				<td th:text="${attendanceList.monthlyWages}"></td>
+				<td><form action="/editAttendanceList" method="POST">
+				<input type = "number" name="newWorkedHours" min="0" required="required">
+				<input type = "number" th:value="${attendanceList.attendanceListId}" name="attendanceListId" hidden="true">
+				<input type="submit" value="Edit hours">
+				</form>
+				<form action="/removeAttendanceList" method="Post">
+				<input type = "number" th:value="${attendanceList.attendanceListId}" 
+				name="attendanceListId" hidden="true">
+				<input type="submit" value="remove this list">
+				</form>
+				
+				</td>
+				
+			</tr>
+		</table>
+
+<h2> Add new list</h2>
+<form action="/addNewAttendanceList" method="POST">
+
+ <select name="months" id="months" required="required">
+					<option value="">Select month</option>
+					<option th:each="month : ${months}" th:value="${month}"
+						th:text="${month}"></option>
+				</select> <br>
+
+<input type="number" min="2018" max="2020" step="1" value="2020" name="year" required="required"/>Year<br>
+<input type="number" name="workedHours" min ="0"  required="required">Worked hours<br>
+<input type="number" th:field="${employee.wage}" name="wage" hidden="true"><br>
+<input type="number" hidden="true" name="employeeId" th:field="${employee.employeeId}" >
+<input type="submit">
+</form>
+
+</body>
+</html>

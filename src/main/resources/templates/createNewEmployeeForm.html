@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create new employees page</title>
+</head>
+<body>
+
+	<div th:insert="/index.html">...</div>
+	<br>
+	<div id="CreateANewEmployeeForm">
+
+		<h1>Create a new employees</h1>
+		<form method="POST" action="createNewEmployeeForm">
+			<input type="text" name="name" required="required">Please,put employee name<br> 
+			<input type="text" name="surname" required="required">Please,put employee surname<br> 
+			<input type="date" name="dateOfBirth" required="required">Please,put employee date of birth<br> 
+			<input type="text" name="country"required="required">Please, put your country<br>
+			<input type="text" name="city" required="required">Please,put employee city<br> 
+			<select name="employerId" id="chooseId">
+			<option value="">Select employer</option>
+			<option th:each="employer : ${employersList}"
+				th:value="${employer.employerId}"
+				th:text="${employer.name}+' : '+${employer.employerId}"></option>
+			</select>
+			<input	type="submit"> Create new employee <br>
+		</form>
+	</div>
+
+</body>
+</html>

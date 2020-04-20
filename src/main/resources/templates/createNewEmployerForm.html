@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create new employer page</title>
+</head>
+<body>
+
+	<div th:insert="/index.html">...</div>
+	<br>
+	<div id="CreateANewEmployerForm">
+
+		<h1>Create a new employer</h1>
+		<form method="POST" action="createNewEmployerForm">
+			<input type="text" name="name" required="required">Please,put employers name<br> 
+			<input type="text" name="city" required="required">Please,put employers city<br> 
+			<input	type="submit"> Create new employer <br>
+		</form>
+	</div>
+
+</body>
+</html>

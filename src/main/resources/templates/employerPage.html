@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html  ng-app="app" xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employer page</title>
+<script type="text/javascript"  src="/bower_components/angular/angular.js"></script>
+<script type="text/javascript"  src="/bower_components/angular/angular.min.js"></script>
+<script type="text/javascript"  src="/bower_components/angular-resource/angular-resource.js"></script>
+<script type="text/javascript"  src="/js/app.js"></script>
+
+</head>
+<body ng_controller="Controller as cont">
+	<div th:insert="/index.html">...</div>
+	<hr>
+
+
+	<div th:if="${employer}">
+		<table class="steelBlueCols">
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>City</th>
+			</tr>
+			<tr>
+				<td th:text="${employer.employerId}"></td>
+				<td th:text="${employer.name}"></td>
+				<td th:text="${employer.city}"></td>
+			</tr>
+		</table>
+		<hr>
+		
+		<table>
+		<tr>
+		<td><input type="button" name="answer" value="Show employees list" onclick="showEmployeesList()" ondblclick="closeEmployeesList()"></td>
+		<td><input type="button" name="answer" value="Show employer edit form" onclick="showEmployerEditForm()" ondblclick="closeEmployerEditForm()"></td>
+		</tr>
+		</table>
+	</div>
+		
+		<div style="display:none" id="employeesList" >
+			<table class="steelBlueCols">
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Surname</th>
+					<th>Position</th>
+				<tr th:each="Employee : ${employer.listOfEmployees}">
+			<td><a th:href="@{'/showInfoAboutEmployee' + '?employeeId=' + ${Employee.employeeId}}" th:text="${Employee.employeeId}"></a></td>
+			
+					<td th:text="${Employee.name}"></td>
+					<td th:text="${Employee.surname}"></td>
+					<td th:text="${Employee.position}"></td>
+			
+				</tr>
+			</table>
+			</div>
+		
+			<hr>
+			
+<div style="display:none" id="changeEmployerDetailsForm" >
+		<h2>Change details about employer</h2>
+		<form action="" method="POST">
+			<input type="text" name="name"> Edit name <br> <input
+				type="text" name="city"> Edit city <br>
+			<input type="text" name="employerId"
+				th:field="${employer.employerId}" hidden="hidden"> <input
+				type="submit" value="update">
+		</form>
+</div>
+
+</body>
+</html>

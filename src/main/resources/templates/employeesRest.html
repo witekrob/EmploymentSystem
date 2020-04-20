@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="app" xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="css/style.css" >
+<script type="text/javascript"  src="/bower_components/angular/angular.js"></script>
+<script type="text/javascript"  src="/bower_components/angular/angular.min.js"></script>
+<script type="text/javascript"  src="/bower_components/angular-resource/angular-resource.js"></script>
+<script type="text/javascript"  src="/js/appEmployees.js"></script>
+ <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>List of all employees from Rest</title>
+
+</head>
+<body ng_controller="Controller as cont">
+	<div th:insert="/index.html">...</div>
+	<hr>
+<h1> Employees </h1>
+<table id="employeesTable" class="steelBlueCols">
+<tr>
+<th onclick="sortTable(0)"> Id</th>
+<th onclick="sortTable(1)"> Name</th>
+<th onclick="sortTable(2)">Surname</th>
+<th onclick="sortTable(3)">City</th>
+<th onclick="sortTable(4)">Employer</th>
+</tr>
+<tr ng-repeat="emp in cont.Employees" ng-click="cont.loadData(emp.employeeId)">
+<td><a th:href="@{showInfoAboutEmployee?employeeId={{emp.employeeId}}}"> {{emp.employeeId}}</a></td>
+<td> {{emp.name}}</td>
+<td> {{emp.surname}}</td>
+<td> {{emp.city}}</td>
+<td> {{emp.employer}}</td>
+</tr>
+</table>
+		<div ng-show="cont.details">
+			<a>{{cont.details.name}}
+			City {{cont.details.city}}, Id: {{cont.details.employeeId}}</a>
+		</div>
+
+
+</body>
+</html>
