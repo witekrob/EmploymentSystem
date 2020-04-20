@@ -1,0 +1,22 @@
+{
+  "name": "JavaScript",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "https://github.com/witekrob/Finder",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "js/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.7.8",
+    "angular-resource": "^1.7.9"
+  },
+  "authors": [
+    "witekrob <39655905+witekrob@users.noreply.github.com>"
+  ]
+}
